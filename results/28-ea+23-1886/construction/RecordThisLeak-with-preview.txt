@@ -1,0 +1,8 @@
+RecordThisLeak.java:3: error: reference to this may only appear after an explicit constructor invocation
+    requireNonNull(label, this);
+                          ^
+RecordThisLeak.java:4: error: reference to this may only appear after an explicit constructor invocation
+    requireNonNull(edges, this);
+                          ^
+2 errors
+error: compilation failed

@@ -1,0 +1,8 @@
+WrapperConstructor.java:2: warning: [deprecation] Integer(int) in Integer has been deprecated
+  Integer a = new Integer(1996);
+              ^
+WrapperConstructor.java:3: warning: [deprecation] Integer(int) in Integer has been deprecated
+  Integer b = new Integer(1996);
+              ^
+2 warnings
+false

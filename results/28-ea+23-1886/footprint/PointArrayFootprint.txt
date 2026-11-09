@@ -1,0 +1,12 @@
+Note: ./src/main/java/footprint/ValuePoint.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+Note: ./src/main/java/footprint/ShortPoint.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+ num     #instances         #bytes  class name (module)
+   1:       1000001       24000024  ValuePoint
+   2:       1000000       16000000  IdentityPoint
+   3:             1        8000016  [LShortPoint; [flat, nullable, atomic]
+   5:             1        4000016  [LIdentityPoint;
+   6:             1        4000016  [LValuePoint;
+ 933:             1             16  ShortPoint
+3000000

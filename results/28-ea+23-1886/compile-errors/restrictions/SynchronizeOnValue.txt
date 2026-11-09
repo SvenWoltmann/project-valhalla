@@ -1,0 +1,8 @@
+SynchronizeOnValue.java:3: error: unexpected type
+  synchronized (date) {
+  ^
+  required: identity class
+  found:    LocalDate
+Note: SynchronizeOnValue.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+1 error

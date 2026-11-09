@@ -1,0 +1,3 @@
+Measurement[value=NaN] / Measurement[value=NaN]
+true
+false

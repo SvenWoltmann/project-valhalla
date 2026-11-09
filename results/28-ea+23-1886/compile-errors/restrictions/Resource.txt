@@ -1,0 +1,10 @@
+Resource.java:9: error: value classes cannot have finalize methods
+  protected void finalize() {
+                 ^
+Resource.java:9: warning: [removal] finalize() in Object has been deprecated and marked for removal
+  protected void finalize() {
+                 ^
+Note: Resource.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+1 error
+1 warning

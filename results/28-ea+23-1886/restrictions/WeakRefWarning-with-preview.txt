@@ -1,0 +1,16 @@
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+                                                  ^
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+                                                     ^
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+               ^
+3 warnings
+Exception in thread "main" java.lang.IdentityException: java.time.LocalDate is not an identity class
+	at java.base/java.util.Objects.requireIdentity(Objects.java:243)
+	at java.base/java.lang.ref.Reference.<init>(Reference.java:543)
+	at java.base/java.lang.ref.Reference.<init>(Reference.java:538)
+	at java.base/java.lang.ref.WeakReference.<init>(WeakReference.java:69)
+	at WeakRefWarning.main(WeakRefWarning.java:5)

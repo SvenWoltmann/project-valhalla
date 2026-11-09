@@ -1,0 +1,11 @@
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+                                                  ^
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+                                                     ^
+WeakRefWarning.java:5: warning: [identity] use of a value-based class with an operation that expects reliable identity
+  WeakReference<LocalDate> ref = new WeakReference<>(date);
+               ^
+3 warnings
+2027-03-09

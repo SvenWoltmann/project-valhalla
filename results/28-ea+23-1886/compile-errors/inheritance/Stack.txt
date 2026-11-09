@@ -1,0 +1,6 @@
+Stack.java:3: error: The identity type ArrayList<String> cannot be a supertype of the value type Stack
+value class Stack extends ArrayList<String> {}
+      ^
+Note: Stack.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+1 error

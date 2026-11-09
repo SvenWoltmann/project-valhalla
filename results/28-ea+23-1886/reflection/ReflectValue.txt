@@ -1,0 +1,7 @@
+WARNING: Final field cents in class IdentityMoney has been mutated reflectively by class ReflectValue in unnamed module @59662a0b (file:./src/main/java/reflection/ReflectValue.java)
+WARNING: Use --enable-final-field-mutation=ALL-UNNAMED to avoid a warning
+WARNING: Mutating final fields will be blocked in a future release unless final field mutation is enabled
+9999
+Note: ./src/main/java/reflection/ValueMoney.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+java.lang.IllegalAccessException: Can not set final long field ValueMoney.cents to (long)9999

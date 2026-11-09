@@ -1,0 +1,4 @@
+ num     #instances         #bytes  class name (module)
+   1:       1000003       16000048  java.time.LocalDate (java.base@28-ea)
+   2:             1        4000016  [Ljava.time.LocalDate; (java.base@28-ea)
+4737-11-27

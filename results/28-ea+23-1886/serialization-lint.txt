@@ -1,0 +1,9 @@
+Money.java:3: warning: [serial] serializable class Money has no definition of serialVersionUID
+value class Money implements Serializable {
+      ^
+Money.java:3: warning: [serial] serializable value class does not declare, or inherits, a writeReplace method
+value class Money implements Serializable {
+      ^
+Note: Money.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+2 warnings

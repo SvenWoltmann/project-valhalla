@@ -1,0 +1,4 @@
+Note: ./src/main/java/declaring/Money.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+12,34 € == 12,34 €: true
+false

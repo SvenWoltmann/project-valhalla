@@ -1,0 +1,6 @@
+UserName.java:9: error: reference to normalize() may only appear after an explicit constructor invocation
+    this.normalized = normalize();
+                      ^
+Note: UserName.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+1 error

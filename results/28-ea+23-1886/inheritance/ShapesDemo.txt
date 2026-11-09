@@ -1,0 +1,6 @@
+Note: ./src/main/java/inheritance/Shape.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+Note: Some input files use preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+9.0
+false

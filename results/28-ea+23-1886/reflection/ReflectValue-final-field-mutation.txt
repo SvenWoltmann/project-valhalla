@@ -1,0 +1,4 @@
+9999
+Note: ./src/main/java/reflection/ValueMoney.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+java.lang.IllegalAccessException: Can not set final long field ValueMoney.cents to (long)9999

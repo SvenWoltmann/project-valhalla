@@ -1,0 +1,6 @@
+Counter.java:5: error: cannot assign a value to final variable count
+    count++;
+    ^
+Note: Counter.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+1 error

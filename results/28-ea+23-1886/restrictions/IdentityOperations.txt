@@ -1,0 +1,4 @@
+java.lang.IdentityException: Cannot synchronize on an instance of value class java.time.LocalDate
+java.lang.IllegalMonitorStateException: current thread is not owner
+java.lang.IdentityException: java.time.LocalDate is not an identity class
+java.lang.IdentityException: java.time.LocalDate is not an identity class

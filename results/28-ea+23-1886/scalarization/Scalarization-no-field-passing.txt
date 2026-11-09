@@ -1,0 +1,5 @@
+Round 1: value 240.000.200 bytes, identity 160.000.056 bytes (30000000)
+Round 2: value 240.000.024 bytes, identity 160.000.016 bytes (30000000)
+Round 3: value 240.000.024 bytes, identity 160.000.016 bytes (30000000)
+Round 4: value 240.000.024 bytes, identity 160.000.016 bytes (30000000)
+Round 5: value 240.000.024 bytes, identity 160.000.016 bytes (30000000)

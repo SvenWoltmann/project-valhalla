@@ -1,0 +1,4 @@
+Note: ./src/main/java/equality/Fraction.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+true
+false

@@ -1,0 +1,21 @@
+MarkWord.java:2: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+MarkWord.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+  Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            ^
+MarkWord.java:10: warning: Unsafe is internal proprietary API and may be removed in a future release
+  Unsafe unsafe = (Unsafe) f.get(null);
+  ^
+MarkWord.java:10: warning: Unsafe is internal proprietary API and may be removed in a future release
+  Unsafe unsafe = (Unsafe) f.get(null);
+                   ^
+MarkWord.java:13: warning: [removal] getLong(Object,long) in Unsafe has been deprecated and marked for removal
+    long mark = unsafe.getLong(o, 0L);
+                      ^
+5 warnings
+IdentityPoint                 100100110110001000000000000000000000000000000000000000001
+ValuePoint                    100100110110110000000000000000000000000000000000010000001
+LocalDate[]                   100011101110100000000000000000000000000000000001000000001
+Integer[]                         11100011001000000000000000000000000000000001000000001
+Object[]                         100111110010000000000000000000000000000000000000000001

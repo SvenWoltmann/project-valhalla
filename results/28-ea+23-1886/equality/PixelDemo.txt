@@ -1,0 +1,6 @@
+Note: ./src/main/java/equality/Pixel.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+true false
+2140219382 2140219382 2140218962
+2140219382
+Pixel@7f9127f6

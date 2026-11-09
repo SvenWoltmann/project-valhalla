@@ -1,0 +1,6 @@
+Note: ./src/main/java/serialization/broken/Point.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+Point[x=17, y=3]
+Note: ./src/main/java/serialization/broken/Money.java uses preview features of Java SE 28.
+Note: Recompile with -Xlint:preview for details.
+java.io.InvalidClassException: Money; cannot serialize due to final value class or strictly-initialized instance fields
