@@ -15,8 +15,10 @@ JAVAC="$JDK/bin/javac"
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 BUILD=$("$JAVA" -version 2>&1 | sed -n 's/.*(build \([^,)]*\).*/\1/p' | head -1)
 OUT="$ROOT/results/$BUILD"
-rm -rf "$OUT"
 mkdir -p "$OUT"
+# jmh/ holds the benchmark results of scripts/run-benchmarks.sh, which take
+# far longer to produce than these outputs
+find "$OUT" -mindepth 1 -maxdepth 1 ! -name jmh -exec rm -rf {} +
 echo "JDK build: $BUILD" > "$OUT/environment.txt"
 "$JAVA" -version >> "$OUT/environment.txt" 2>&1
 

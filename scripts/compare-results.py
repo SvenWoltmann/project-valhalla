@@ -31,6 +31,10 @@ LAYOUT_CLASSES = {
     "java/lang/Integer", "java/lang/Long",
 }
 
+# Benchmark results of scripts/run-benchmarks.sh; measurements, not outputs
+# to compare
+BENCHMARK_DIR = "jmh/"
+
 
 def git(*args):
     return subprocess.run(["git", *args], capture_output=True, text=True,
@@ -93,7 +97,8 @@ def normalize(path, text):
 
 def files_in_commit(ref):
     prefix = "results/%s/" % ref
-    return {p[len(prefix):] for p in git("ls-files", prefix).splitlines()}
+    return {p[len(prefix):] for p in git("ls-files", prefix).splitlines()
+            if not p[len(prefix):].startswith(BENCHMARK_DIR)}
 
 
 def main():
@@ -106,6 +111,7 @@ def main():
         return
     new_files = {os.path.relpath(os.path.join(d, f), new_dir)
                  for d, _, fs in os.walk(new_dir) for f in fs if f.endswith(".txt")}
+    new_files = {f for f in new_files if not f.startswith(BENCHMARK_DIR)}
     ref_files = files_in_commit(ref)
     on_actions = os.environ.get("GITHUB_ACTIONS") == "true"
     summary = []
