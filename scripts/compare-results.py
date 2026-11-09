@@ -7,8 +7,9 @@ The reference is the newest results/<build>/ directory in the last commit,
 read with git, so a run that overwrote the same build directory still
 compares against what the article quotes. Values that change from run to
 run are masked before comparing: the warmup rounds of Scalarization, the
-hash of a value object, the class-pointer and hash bits of the mark word, identity hashes in warnings,
-the ranks in class histograms, and the layouts of JDK-internal classes.
+depth of a stack overflow, the hash of a value object, the class-pointer
+and hash bits of the mark word, identity hashes in warnings, the ranks in
+class histograms, and the layouts of JDK-internal classes.
 
 Differences are reported, never fatal: a new early-access build may change
 layouts or messages, and the point is to see that before the article goes
@@ -75,6 +76,10 @@ def normalize(path, text):
         text = re.sub(r"^(\S+)\s+([01]+)$",
                       lambda m: "%s %s" % (m.group(1), m.group(2)[-11:].rjust(11, "0")),
                       text, flags=re.M)
+    if name == "DeepComparison.txt":
+        # the recursion depth at the StackOverflowError depends on the stack
+        # size of the machine; keep the exception and its first two frames
+        text = "\n".join(text.splitlines()[:3]) + "\n"
     if name == "PixelDemo.txt":
         # a value object's hash starts from the identity hash of its class
         text = re.sub(r"-?\d{5,}", "<hash>", text)
