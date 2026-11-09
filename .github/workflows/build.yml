@@ -35,6 +35,13 @@ jobs:
       - name: Run all examples
         run: scripts/run-examples.sh "$JAVA_HOME"
 
+      # Only builds the benchmarks; a run needs an idle machine and about
+      # 18 minutes (scripts/run-benchmarks.sh).
+      - name: Build the benchmarks
+        if: always()
+        working-directory: benchmarks
+        run: mvn -B -q package && mvn -B -q package -P preview
+
       # Reports outputs that differ from the committed results, as warnings
       # and in the job summary; never fails the build.
       - name: Compare outputs with the committed results

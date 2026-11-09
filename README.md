@@ -56,6 +56,15 @@ java --enable-preview -Xshare:off -XX:+UnlockDiagnosticVMOptions \
 The GitHub workflow does both on every push and once a week with the newest JDK 28 early-access build from jdk.java.net. A new build that changes a layout or a message shows up as a warning in the job summary; the build itself only fails on an unexpected exit.
 
 
+## Benchmarks
+
+`benchmarks/` is a Maven project with the JMH benchmarks of the article's run-time measurements: the sum over one million elements of an `int[]`, an `Integer[]` and a `LocalDate[]`, with and without preview features, and – as a contrast – over an array of a value record that the JVM does not flatten. Each benchmark runs once with the objects in allocation order and once with the array shuffled, so that the loop jumps across the heap.
+
+`scripts/run-benchmarks.sh <path-to-jdk-28>` builds the benchmarks and writes the raw JMH results, the machine details and a summary table to `results/<build>/jmh/`. It takes about 18 minutes; run it on an otherwise idle machine.
+
+The benchmarks come as two jars, because a class compiled with preview features only loads in a JVM with preview features enabled: `benchmarks.jar` (`mvn package`) runs with and without `--enable-preview`, `benchmarks-preview.jar` (`mvn package -P preview`) declares its own value record and needs it.
+
+
 <!-- happycoders-resources:start -->
 <!-- Generated from happycoders-website-astro/data/github-readme by scripts/content/sync-github-readmes.mjs. Edit there, not here. -->
 

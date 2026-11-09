@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- The JMH benchmarks of the article's run-time measurements. They live in their own Maven
+       project, so the compact source files under ../src/main/java stay outside any build.
+
+       Two jars, because a class compiled with preview features only loads in a JVM that has
+       preview features enabled:
+       - `mvn package` builds target/benchmarks.jar from src/main/java without preview features.
+         It runs with and without preview features; with them, the JDK's Integer and LocalDate
+         are value classes, and the JVM lays out Integer[] and LocalDate[] flat.
+       - `mvn package -P preview` builds target/benchmarks-preview.jar from src/preview/java, which
+         declares its own value record and therefore only runs with preview features. -->
+
+  <groupId>eu.happycoders</groupId>
+  <artifactId>project-valhalla-benchmarks</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <java.version>28</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <jmh.version>1.37</jmh.version>
+
+    <!-- Plugin versions -->
+    <compiler-plugin.version>3.16.0</compiler-plugin.version>
+    <shade-plugin.version>3.6.2</shade-plugin.version>
+
+    <!-- Overridden by the preview profile -->
+    <benchmark.sources>src/main/java</benchmark.sources>
+    <benchmark.jar>benchmarks</benchmark.jar>
+    <benchmark.preview.arg>-Xlint:none</benchmark.preview.arg>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>${jmh.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>${jmh.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>${benchmark.sources}</sourceDirectory>
+    <!-- One build directory per jar: both builds would otherwise share target/classes and the
+         sources that JMH generates, and each jar would pick up the other's benchmarks. -->
+    <directory>${project.basedir}/target/${benchmark.jar}-build</directory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler-plugin.version}</version>
+        <configuration>
+          <release>${java.version}</release>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgs>
+            <arg>${benchmark.preview.arg}</arg>
+          </compilerArgs>
+          <!-- Since JDK 23, javac no longer discovers annotation processors on the classpath, so
+               JMH's generator has to be named here. Without it the build succeeds but produces a
+               jar without META-INF/BenchmarkList, and every run dies with "Unable to find the
+               resource". -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.openjdk.jmh</groupId>
+              <artifactId>jmh-generator-annprocess</artifactId>
+              <version>${jmh.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <!-- Packages the benchmarks and JMH itself into target/benchmarks.jar (or benchmarks-preview.jar), so a run is
+           `java -jar target/benchmarks.jar` - the JMH archetype's standard setup. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${shade-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.basedir}/target/${benchmark.jar}.jar</outputFile>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.openjdk.jmh.Main</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>preview</id>
+      <properties>
+        <benchmark.sources>src/preview/java</benchmark.sources>
+        <benchmark.jar>benchmarks-preview</benchmark.jar>
+        <benchmark.preview.arg>--enable-preview</benchmark.preview.arg>
+      </properties>
+    </profile>
+  </profiles>
+</project>
