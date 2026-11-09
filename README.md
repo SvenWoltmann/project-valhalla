@@ -49,7 +49,11 @@ java --enable-preview -Xshare:off -XX:+UnlockDiagnosticVMOptions \
 
 ## Reproducing all outputs
 
-`scripts/run-examples.sh <path-to-jdk-28>` runs every program with the options used in the article, compiles the compile-error examples, and writes all outputs to `results/<build>/`. It takes about half a minute.
+`scripts/run-examples.sh <path-to-jdk-28>` runs every program with the options used in the article, compiles the compile-error examples, and writes all outputs to `results/<build>/`. It takes about half a minute and exits with an error if a program ends differently than the article says – a program fails that should run, or one runs that should fail.
+
+`scripts/compare-results.py results/<build>` compares a fresh run with the outputs in the last commit. It masks what changes from run to run (warmup numbers, hash values, the class-pointer bits of the mark word, histogram ranks) and reports every other difference.
+
+The GitHub workflow does both on every push and once a week with the newest JDK 28 early-access build from jdk.java.net. A new build that changes a layout or a message shows up as a warning in the job summary; the build itself only fails on an unexpected exit.
 
 
 <!-- happycoders-resources:start -->

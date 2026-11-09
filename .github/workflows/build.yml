@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    # jdk.java.net replaces the JDK 28 early-access build about once a week.
+    # A weekly run shows whether a new build changes what the article quotes.
+    - cron: '23 5 * * 2'
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # The examples need JDK 28 with preview features (value classes,
+      # JEP 401). jdk.java.net only offers the newest early-access build, so
+      # this is not always the build the article was measured on.
+      - name: Set up JDK 28 early access
+        uses: oracle-actions/setup-java@v1
+        with:
+          website: jdk.java.net
+          release: 28
+
+      # Fails if a program ends differently than the article says: a program
+      # that should run fails, or one that should fail runs.
+      - name: Run all examples
+        run: scripts/run-examples.sh "$JAVA_HOME"
+
+      # Reports outputs that differ from the committed results, as warnings
+      # and in the job summary; never fails the build.
+      - name: Compare outputs with the committed results
+        if: always()
+        run: python3 scripts/compare-results.py "$(ls -td results/*/ | head -1)"

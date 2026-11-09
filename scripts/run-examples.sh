@@ -2,6 +2,11 @@
 # Runs every example program and compile-error example with the given JDK
 # and writes the outputs to results/<build>/.
 # Usage: scripts/run-examples.sh <path-to-jdk-28>
+#
+# Exits with 1 if a program ends differently than the article says: a
+# program that should run fails, a program that should fail (a compile
+# error, an exception the article shows) runs, or a compile-error example
+# compiles. The outputs themselves are compared by compare-results.py.
 set -uo pipefail
 
 JDK=${1:?usage: scripts/run-examples.sh <path-to-jdk-28>}
@@ -15,21 +20,37 @@ mkdir -p "$OUT"
 echo "JDK build: $BUILD" > "$OUT/environment.txt"
 "$JAVA" -version >> "$OUT/environment.txt" 2>&1
 
+# Outputs whose program ends with a compile error or an exception on purpose
+EXPECTED_TO_FAIL=" DeepComparison WeakRefWarning-with-preview RecordThisLeak-with-preview "
+UNEXPECTED=()
+
+# Number formats (%,d) follow the German article on every machine; only the
+# format locale, so compiler messages stay in the machine's display language
+LOCALE=(-Duser.language.format=de -Duser.country.format=DE)
+
 run() { # <dir> <program> <output-name> [java options...]
-  local dir=$1 program=$2 name=$3
+  local dir=$1 program=$2 name=$3 status
   shift 3
   mkdir -p "$OUT/$dir"
-  (cd "$ROOT/src/main/java/$dir" && "$JAVA" "$@" "$program.java") \
+  (cd "$ROOT/src/main/java/$dir" && "$JAVA" "${LOCALE[@]}" "$@" "$program.java") \
       > "$OUT/$dir/$name.txt" 2>&1
+  status=$?
+  if [[ "$EXPECTED_TO_FAIL" == *" $name "* ]]; then
+    [[ $status -ne 0 ]] || UNEXPECTED+=("$dir/$name ran, but should fail")
+  else
+    [[ $status -eq 0 ]] || UNEXPECTED+=("$dir/$name failed with exit code $status")
+  fi
 }
 
 compile_error() { # <dir> <file>
   local dir=$1 file=$2 tmp
   tmp=$(mktemp -d)
   mkdir -p "$OUT/compile-errors/$dir"
-  (cd "$ROOT/src/compile-errors/$dir" \
+  if (cd "$ROOT/src/compile-errors/$dir" \
       && "$JAVAC" --release 28 --enable-preview -Xlint:-preview -d "$tmp" "$file.java") \
-      > "$OUT/compile-errors/$dir/$file.txt" 2>&1
+      > "$OUT/compile-errors/$dir/$file.txt" 2>&1; then
+    UNEXPECTED+=("compile-errors/$dir/$file compiled, but should not")
+  fi
   rm -rf "$tmp"
 }
 
@@ -84,3 +105,8 @@ find "$OUT" -name '*.txt' -exec sed -i.bak "s#$ROOT#.#g" {} +
 find "$OUT" -name '*.bak' -delete
 
 echo "Outputs written to $OUT"
+
+if [[ ${#UNEXPECTED[@]} -gt 0 ]]; then
+  printf 'Unexpected result: %s\n' "${UNEXPECTED[@]}" >&2
+  exit 1
+fi
